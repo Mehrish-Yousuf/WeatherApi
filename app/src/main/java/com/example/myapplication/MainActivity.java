@@ -7,6 +7,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.myapplication.DTOs.WResponse;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
     public static String AppId = "e8a0eea80fb3cf3b499343766222f5f8";
     public static String lat = "35";
     public static String lon = "139";
+    public static String exclude = "current,minutely,alerts";
 
     private TextView weatherData;
 
@@ -49,10 +51,10 @@ public class MainActivity extends AppCompatActivity {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WeatherService service = retrofit.create(WeatherService.class);
-        Call<WeatherResponse> call = service.getCurrentWeatherData(lat, lon, AppId);
-        call.enqueue(new Callback<WeatherResponse>() {
+        Call<WResponse> call = service.getCurrentWeatherData(lat, lon, exclude, AppId);
+        call.enqueue(new Callback<WResponse>() {
             @Override
-            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
+            public void onResponse(@NonNull Call<WResponse> call, @NonNull Response<WResponse> response) {
                 if (response.code() == 200) {
                     Log.d("response----------", response.body().toString());
                 }
