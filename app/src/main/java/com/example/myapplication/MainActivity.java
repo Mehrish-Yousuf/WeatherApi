@@ -1,14 +1,12 @@
 package com.example.myapplication;
 
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import com.ajts.androidmads.fontutils.FontUtils;
-import retrofit.RxJavaCallAdapterFactory;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -48,14 +46,13 @@ public class MainActivity extends AppCompatActivity {
         System.out.println("calling weather api----");
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BaseUrl)
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
         WeatherService service = retrofit.create(WeatherService.class);
-        Call call = service.getCurrentWeatherData(lat, lon, AppId);
-        call.enqueue(new Callback() {
+        Call<WeatherResponse> call = service.getCurrentWeatherData(lat, lon, AppId);
+        call.enqueue(new Callback<WeatherResponse>() {
             @Override
-            public void onResponse(@NonNull Call call, @NonNull Response response) {
+            public void onResponse(@NonNull Call<WeatherResponse> call, @NonNull Response<WeatherResponse> response) {
                 if (response.code() == 200) {
                     Log.d("response----------", response.body().toString());
                 }
